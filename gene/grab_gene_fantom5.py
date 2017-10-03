@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 import pandas as pd
-import pymongo
 import os
+import lxml
 
 
 
@@ -17,15 +17,18 @@ class Gene_scraper:
         os.chdir(os.pardir)
         foldname = "fantom5_lasso"
         filename_list = os.listdir(foldname)
+        filename_list = sorted(filename_list)
+        print filename_list
+        # print filename_list
         os.chdir(foldname)
-
-        for i in range(344, 345):
+        for i in range(len(filename_list)):
             filename = filename_list[i]
             print "filename: ", filename
-            if filename == ".." or filename == ".":
+            if filename == "pair1" or filename == "pair2":
                 continue
-            pair1fname = "pair1/" + "sample" + str(i+1) + "pair1.fasta"
-            pair2fname = "pair2/" + "sample" + str(i+1) + "pair2.fasta"
+            no_ = filename.split(".")[1]
+            pair1fname = "pair1/" + "fantom5_" + no_ + "_1.fasta"
+            pair2fname = "pair2/" + "fantom5_" + no_ + "_2.fasta"
             p1File = open(pair1fname, "a")
             p2File = open(pair2fname, "a")
             file = open(filename, "r")
