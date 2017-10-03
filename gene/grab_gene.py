@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 import pandas as pd
-import pymongo
 import os
 
 
@@ -15,15 +14,17 @@ class Gene_scraper:
     def dealCSV(self):
 
         os.chdir(os.pardir)
-        foldname = "encoderoadmap_lasso"
+        foldname = "encode_lasso"
         filename_list = os.listdir(foldname)
         os.chdir(foldname)
-        sid = 0
-        for filename in filename_list:
-            sid = sid + 1
-            print filename
-            pair1fname = "pair1/" + "sample" + str(sid) + "pair1.fasta"
-            pair2fname = "pair2/" + "sample" + str(sid) + "pair2.fasta"
+        for i in range(len(filename_list)):
+            filename = filename_list[i]
+            print "filename: ", filename
+            if filename == "pair1" or filename == "pair2":
+                continue
+            no_ = filename.split(".")[1]
+            pair1fname = "pair1/" + str(i) + "_encode_" + no_ + "_1.fasta"
+            pair2fname = "pair2/" + str(i) + "_encode_" + no_ + "_2.fasta"
             p1File = open(pair1fname, "a")
             p2File = open(pair2fname, "a")
             file = open(filename, "r")

@@ -27,8 +27,8 @@ class Gene_scraper:
             if filename == "pair1" or filename == "pair2":
                 continue
             no_ = filename.split(".")[1]
-            pair1fname = "pair1/" + "fantom5_" + no_ + "_1.fasta"
-            pair2fname = "pair2/" + "fantom5_" + no_ + "_2.fasta"
+            pair1fname = "pair1/" + str(i) + "fantom5_" + no_ + "_1.fasta"
+            pair2fname = "pair2/" + str(i) + "fantom5_" + no_ + "_2.fasta"
             p1File = open(pair1fname, "a")
             p2File = open(pair2fname, "a")
             file = open(filename, "r")
