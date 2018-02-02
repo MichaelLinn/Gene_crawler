@@ -1,0 +1,1 @@
+./run_MotifHyades.sh /usr/local/MATLAB/MATLAB_Compiler_Runtime/v81/ SequenceSet1.fasta SequenceSet2.fasta

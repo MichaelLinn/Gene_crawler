@@ -14,6 +14,7 @@ class Gene_scraper:
 
     def dealCSV(self):
 
+
         os.chdir(os.pardir)
         foldname = "fantom5_lasso"
         filename_list = os.listdir(foldname)
@@ -33,20 +34,20 @@ class Gene_scraper:
             p2File = open(pair2fname, "a")
             file = open(filename, "r")
 
-            for i in range(1, 200, 2):
-                print "----------line " + str(i) + "----------"
+            for j in range(1, 200, 2):
+                print "----------line " + str(j) + "----------"
                 line = file.readline()
                 if line != "":
                     gene_list = line.split(",")
                     promoterSeq = self.dealFirstGeneStr(gene_list[0])  # promoterSeq
-                    p1File.write((">seq" + str(i) + "\n"))
+                    p1File.write((">seq" + str(j) + "\n"))
                     p1File.write(promoterSeq + "\n")
-                    p1File.write((">seq" + str(i + 1) + "\n"))
+                    p1File.write((">seq" + str(j + 1) + "\n"))
                     p1File.write(promoterSeq + "\n")
                     upSeq, downSeq = self.dealSecondGeneStr(gene_list[1])  # geneUpStream & geneDownStream
-                    p2File.write((">seq" + str(i) + "\n"))
+                    p2File.write((">seq" + str(j) + "\n"))
                     p2File.write(upSeq + "\n")
-                    p2File.write((">seq" + str(i + 1) + "\n"))
+                    p2File.write((">seq" + str(j + 1) + "\n"))
                     p2File.write(downSeq + "\n")
                 else:
                     p1File.close()

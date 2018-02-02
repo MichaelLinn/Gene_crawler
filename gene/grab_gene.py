@@ -29,22 +29,26 @@ class Gene_scraper:
             p2File = open(pair2fname, "a")
             file = open(filename, "r")
 
-            for i in range(1, 200, 2):
+            for j in range(1, 200, 2):
                 gene_list = file.readline().split(",")
                 promoterSeq = self.dealFirstGeneStr(gene_list[0])  # promoterSeq
-                p1File.write((">seq"+str(i)+"\n"))
+                p1File.write((">seq"+str(j)+"\n"))
                 p1File.write(promoterSeq + "\n")
-                p1File.write((">seq" + str(i+1) + "\n"))
+                p1File.write((">seq" + str(j+1) + "\n"))
                 p1File.write(promoterSeq + "\n")
                 upSeq, downSeq = self.dealSecondGeneStr(gene_list[1])  # geneUpStream & geneDownStream
-                p2File.write((">seq" + str(i) + "\n"))
+                p2File.write((">seq" + str(j) + "\n"))
                 p2File.write(upSeq + "\n")
-                p2File.write((">seq" + str(i+1) + "\n"))
+                p2File.write((">seq" + str(j+1) + "\n"))
                 p2File.write(downSeq + "\n")
 
             p1File.close()
             p2File.close()
             file.close()
+
+            if i > 2:
+                break
+
 
     def dealFirstGeneStr(self, gString):
 
@@ -105,17 +109,14 @@ class Gene_scraper:
 
     def buildFasta(self, geneSeq, idx, filename):
 
-
         return 0
 
 
-if __name__ == "main":
+if __name__ == "__main__":
 
     print os.getcwd()
     tem = Gene_scraper()
     tem.dealCSV()
 
-print os.getcwd()
-tem = Gene_scraper()
-tem.dealCSV()
+
 # tem.getGeneSeq()
