@@ -85,7 +85,7 @@ class Gene_scraper:
 
     def getUDGeneSeq(self, gene_name):
 
-        gene_name = "ENSG00000138385"
+        # gene_name = "ENSG00000138385"
         url = "http://grch37.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=" + gene_name
         print url
         req = urllib2.Request(url)
@@ -109,84 +109,12 @@ class Gene_scraper:
         return upSeq, downSeq
 
 
-    # build a csv to record the position of potential enhencer and promoter
-    def buildMotifPositionFile(self):
-        os.chdir(os.pardir)
-        foldname = "encode_lasso"
-        filename_list = os.listdir(foldname)
-        print filename_list
-        os.chdir(foldname)
-
-        # motif_ = open("motif_position.csv", "r")
-        title = ["chr_type", "promoter", "gene", "enhancer", "encode_no"]
-        motif_info_list = []
-
-        for i in range(len(filename_list)):
-            filename = filename_list[i]
-            print "filename: ", filename
-            if filename == "pair1" or filename == "pair2":
-                continue
-            encode_no = filename.split(".")[1]
-
-            file = open(filename, "r")
-
-            for j in range(1, 200, 2):
-                gene_list = file.readline().split(",")
-                print gene_list
-
-                promoterInfo = gene_list[0]  # promoterSeq
-                geneName = gene_list[1].split(".")[0]
-
-                upEnhancer, downEnhancer = self.getPositionOfEnhancer(geneName)  # geneUpStream & geneDownStream
-
-                chr_type = "chr" + str(upEnhancer[0])
-                upE = chr_type + ":" + str(upEnhancer[1]) + "-" + str(upEnhancer[2])
-                downE = chr_type + ":" +  str(downEnhancer[1]) + "-" + str(downEnhancer[2])
-
-                # title = ["chr_type", "promoter", "gene", "enhancer", "encode_no"]
-                temU = [chr_type, promoterInfo, geneName, upE, encode_no]
-                temD = [chr_type, promoterInfo, geneName, downE, encode_no]
-
-                motif_info_list.append(temU)
-                motif_info_list.append(temD)
-
-            file.close()
-            break
-
-        motif_df = pd.DataFrame(motif_info_list)
-        motif_df.columns = title
-        motif_df.to_csv("../motif_encode.csv", index=False)
-
-    def getPositionOfEnhancer(self, gene_name):
-
-        # gene_name = "ENSG00000138385"
-        url = "http://grch37.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=" + gene_name
-        print url
-        req = urllib2.Request(url)
-        resp = urllib2.urlopen(req)
-
-        respHtml = resp.read()
-        soup = BeautifulSoup(respHtml, "lxml")
-
-        list = soup.body.find("a", class_="constant")
-
-        href = list.attrs['href'].split(";")
-
-        type, gStart, gEnd = re.split(":|-", href[2])
-        type = type.split("=")[1]
-        gStart = int(gStart)
-        gEnd = int(gEnd)
-        upSeq = [type, gStart - 1000, gStart - 1]
-        downSeq = [type, gEnd + 1, gEnd + 1000]
-
-        return upSeq, downSeq
-
 
 if __name__ == "__main__":
 
     print os.getcwd()
     tem = Gene_scraper()
-    tem.buildMotifPositionFile()
+    tem.dealCSV()
 
 
 
